@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rossbrauknechten – truien & fluohesjes bestellen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF0EA; --panel:#FFFFFF; --ink:#18201B; --muted:#56615A;
+  --line:#CBD3CC; --green:#1F3B2D; --fluo:#D6F000; --fluo-ink:#1B2200;
+  --silver:#C9CFCB; --danger:#B3261E;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121815; --panel:#1B2420; --ink:#E8EEE9; --muted:#9EABA3;
+    --line:#33413A; --green:#9FD1B5; --fluo:#D6F000; --fluo-ink:#1B2200;
+    --silver:#46524C; --danger:#FF8A80;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121815; --panel:#1B2420; --ink:#E8EEE9; --muted:#9EABA3;
+  --line:#33413A; --green:#9FD1B5; --fluo:#D6F000; --fluo-ink:#1B2200;
+  --silver:#46524C; --danger:#FF8A80;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.5}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px 64px}
+
+header{padding:40px 0 0}
+h1{font-stretch:68%;font-weight:900;font-size:clamp(2.6rem,11vw,5.2rem);
+  line-height:.9;margin:0;letter-spacing:-.01em;color:var(--green)}
+.sub{font-stretch:100%;font-size:1.1rem;margin:14px 0 0;color:var(--muted);max-width:56ch}
+/* reflecterende band zoals op een fluohesje */
+.band{height:46px;margin:28px -18px 0;background:var(--fluo);position:relative}
+.band::before,.band::after{content:"";position:absolute;left:0;right:0;height:8px;background:var(--silver)}
+.band::before{top:9px}.band::after{bottom:9px}
+
+section{margin-top:34px}
+h2{font-stretch:80%;font-weight:800;font-size:1.5rem;margin:0 0 12px}
+label{display:block;font-weight:600;font-size:.92rem;margin-bottom:5px}
+input[type=text],input[type=tel],input[type=number],select{
+  width:100%;font:inherit;color:var(--ink);background:var(--panel);
+  border:1.5px solid var(--line);border-radius:6px;padding:10px 12px;min-height:44px}
+input:focus-visible,select:focus-visible,button:focus-visible{
+  outline:3px solid var(--fluo);outline-offset:2px;border-color:var(--green)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.item{background:var(--panel);border:1.5px solid var(--line);border-radius:10px;
+  padding:16px;margin-bottom:12px;border-left:8px solid var(--green)}
+.item.fluo{border-left-color:var(--fluo)}
+.item-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px}
+.item-title{font-stretch:80%;font-weight:800;font-size:1.15rem}
+.remove{background:none;border:none;color:var(--danger);font:inherit;font-weight:600;
+  cursor:pointer;padding:6px 8px;border-radius:6px}
+.seg{display:flex;border:1.5px solid var(--line);border-radius:6px;overflow:hidden;min-height:44px}
+.seg button{flex:1;font:inherit;font-weight:600;background:var(--panel);color:var(--ink);
+  border:none;cursor:pointer;padding:8px}
+.seg button+button{border-left:1.5px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--green);color:var(--panel)}
+.item.fluo .seg.artikel button[aria-pressed="true"]{background:var(--fluo);color:var(--fluo-ink)}
+.row{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;margin-top:12px}
+.row3{display:grid;grid-template-columns:2fr .7fr;gap:12px;margin-top:12px}
+.err{color:var(--danger);font-size:.88rem;margin-top:4px;min-height:0}
+.invalid{border-color:var(--danger)!important}
+
+.add{width:100%;font:inherit;font-weight:700;font-size:1.05rem;min-height:52px;cursor:pointer;
+  background:transparent;color:var(--green);border:2px dashed var(--green);border-radius:10px}
+.add:hover{background:color-mix(in srgb,var(--green) 8%,transparent)}
+
+.summary{background:var(--green);color:var(--bg);border-radius:10px;padding:20px}
+.summary h2{color:var(--bg)}
+.totals{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:14px}
+.totals div{font-stretch:75%;font-weight:800;font-size:2.2rem;line-height:1}
+.totals span{display:block;font-stretch:100%;font-weight:500;font-size:.9rem;margin-top:4px}
+pre{white-space:pre-wrap;background:rgba(0,0,0,.18);border-radius:6px;padding:12px;
+  font-family:inherit;font-size:.95rem;margin:0 0 14px;max-height:280px;overflow:auto}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+.btn{font:inherit;font-weight:700;min-height:48px;padding:10px 18px;border-radius:6px;
+  cursor:pointer;border:none;text-decoration:none;display:inline-flex;align-items:center}
+.btn.primary{background:var(--fluo);color:var(--fluo-ink)}
+.btn.ghost{background:transparent;color:var(--bg);border:1.5px solid currentColor}
+.note{font-size:.9rem;opacity:.85;margin:12px 0 0}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);
+  color:var(--bg);padding:10px 16px;border-radius:6px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (max-width:520px){.grid2,.row{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Rossbrau&shy;knechten</h1>
+    <p class="sub">Bestel truien en fluohesjes voor je hele gezin. Voeg per gezinslid een kledingstuk toe en stuur je bestelling door.</p>
+    <div class="band" aria-hidden="true"></div>
+  </header>
+
+  <section>
+    <h2>Besteller</h2>
+    <div class="grid2">
+      <div>
+        <label for="besteller">Naam besteller</label>
+        <input type="text" id="besteller" autocomplete="name" placeholder="Voor- en achternaam">
+        <div class="err" id="bestellerErr"></div>
+      </div>
+      <div>
+        <label for="tel">Telefoon (optioneel)</label>
+        <input type="tel" id="tel" autocomplete="tel" placeholder="04..">
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Kledingstukken</h2>
+    <div id="items"></div>
+    <button class="add" id="addBtn" type="button">+ Kledingstuk toevoegen</button>
+  </section>
+
+  <section>
+    <div class="summary">
+      <h2>Jouw bestelling</h2>
+      <div class="totals">
+        <div id="tTrui">0<span>truien</span></div>
+        <div id="tFluo">0<span>fluohesjes</span></div>
+      </div>
+      <pre id="preview">Nog niets ingevuld.</pre>
+      <div class="err" id="sendErr" style="color:var(--fluo)"></div>
+      <div class="actions">
+        <a class="btn primary" id="mailBtn" href="#" target="_blank" rel="noopener">Verstuur bestelling via mail</a>
+        <button class="btn ghost" id="copyBtn" type="button">Kopieer tekst</button>
+      </div>
+      <p class="note">De knop opent je mailprogramma met de bestelling al ingevuld. Werkt dat niet, kopieer dan de tekst en mail ze naar v_meheus@hotmail.com.</p>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+// E-mailadres van de organisator.
+const ORGANISATOR_MAIL = "v_meheus@hotmail.com";
+
+const MATEN = {
+  "Volwassenen": ["XS","S","M","L","XL","XXL","3XL","4XL"],
+  "Kinderen": ["104 (3-4 j)","116 (5-6 j)","128 (7-8 j)","140 (9-10 j)","152 (11-12 j)","164 (13-14 j)"]
+};
+const KEY = "rossbrau-bestelling-v1";
+let state = { besteller:"", tel:"", items:[] };
+let showErrors = false;
+
+function newItem(){ return { id: Math.random().toString(36).slice(2,9), artikel:"Trui", model:"", maat:"", naam:"", aantal:1 }; }
+
+function load(){
+  try{ const s = JSON.parse(localStorage.getItem(KEY)); if(s && Array.isArray(s.items)) state = s; }catch(e){}
+  if(!state.items.length) state.items.push(newItem());
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+const $ = id => document.getElementById(id);
+
+function renderItems(){
+  const box = $("items"); box.innerHTML = "";
+  state.items.forEach((it, i) => {
+    const el = document.createElement("div");
+    el.className = "item" + (it.artikel === "Fluohesje" ? " fluo" : "");
+    const maatOpts = Object.entries(MATEN).map(([g, arr]) =>
+      `<optgroup label="${g}">${arr.map(m => `<option ${it.maat===m?"selected":""}>${m}</option>`).join("")}</optgroup>`).join("");
+    el.innerHTML = `
+      <div class="item-head">
+        <span class="item-title">Kledingstuk ${i+1}</span>
+        ${state.items.length > 1 ? `<button class="remove" type="button" data-act="remove">Verwijderen</button>` : ""}
+      </div>
+      <label>Wat</label>
+      <div class="seg artikel" role="group" aria-label="Soort kledingstuk">
+        <button type="button" data-act="artikel" data-val="Trui" aria-pressed="${it.artikel==="Trui"}">Trui</button>
+        <button type="button" data-act="artikel" data-val="Fluohesje" aria-pressed="${it.artikel==="Fluohesje"}">Fluohesje</button>
+      </div>
+      <div class="row">
+        <div>
+          <label>Model</label>
+          <div class="seg model ${showErrors && !it.model ? "invalid":""}" role="group" aria-label="Model">
+            <button type="button" data-act="model" data-val="Man" aria-pressed="${it.model==="Man"}">Man</button>
+            <button type="button" data-act="model" data-val="Vrouw" aria-pressed="${it.model==="Vrouw"}">Vrouw</button>
+          </div>
+        </div>
+        <div>
+          <label for="maat-${it.id}">Maat</label>
+          <select id="maat-${it.id}" data-act="maat" class="${showErrors && !it.maat ? "invalid":""}">
+            <option value="" ${!it.maat?"selected":""}>Kies maat</option>${maatOpts}
+          </select>
+        </div>
+      </div>
+      <div class="row3">
+        <div>
+          <label for="naam-${it.id}">Naam op ${it.artikel === "Trui" ? "de trui" : "het fluohesje"}</label>
+          <input type="text" id="naam-${it.id}" data-act="naam" value="${escapeAttr(it.naam)}" placeholder="bv. Odelien" maxlength="30" class="${showErrors && !it.naam.trim() ? "invalid":""}">
+        </div>
+        <div>
+          <label for="aantal-${it.id}">Aantal</label>
+          <input type="number" id="aantal-${it.id}" data-act="aantal" min="1" max="20" value="${it.aantal}">
+        </div>
+      </div>
+      <div class="err">${showErrors && itemErrors(it).length ? "Nog in te vullen: " + itemErrors(it).join(", ") : ""}</div>`;
+    el.dataset.id = it.id;
+    box.appendChild(el);
+  });
+}
+
+function escapeAttr(s){ return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
+function itemErrors(it){
+  const e = [];
+  if(!it.model) e.push("model");
+  if(!it.maat) e.push("maat");
+  if(!it.naam.trim()) e.push("naam");
+  return e;
+}
+
+function buildText(){
+  const lines = [`Bestelling Rossbrauknechten`, `Besteller: ${state.besteller.trim() || "-"}`];
+  if(state.tel.trim()) lines.push(`Telefoon: ${state.tel.trim()}`);
+  lines.push("");
+  state.items.forEach((it, i) => {
+    lines.push(`${i+1}. ${it.aantal}x ${it.artikel} – ${it.model || "?"} – maat ${it.maat || "?"} – naam: ${it.naam.trim() || "?"}`);
+  });
+  return lines.join("\n");
+}
+
+function renderSummary(){
+  const sum = a => state.items.filter(i => i.artikel === a).reduce((t,i) => t + (Number(i.aantal)||0), 0);
+  $("tTrui").firstChild.nodeValue = sum("Trui");
+  $("tFluo").firstChild.nodeValue = sum("Fluohesje");
+  const text = buildText();
+  $("preview").textContent = text;
+  const enc = encodeURIComponent(text);
+  $("mailBtn").href = `mailto:${ORGANISATOR_MAIL}?subject=${encodeURIComponent("Bestelling Rossbrauknechten – " + (state.besteller.trim() || ""))}&body=${enc}`;
+}
+
+function isValid(){
+  const ok = state.besteller.trim() && state.items.every(it => !itemErrors(it).length);
+  return !!ok;
+}
+function validateForSend(ev){
+  if(isValid()){ $("sendErr").textContent = ""; return true; }
+  if(ev) ev.preventDefault();
+  showErrors = true;
+  $("bestellerErr").textContent = state.besteller.trim() ? "" : "Vul je naam in.";
+  $("besteller").classList.toggle("invalid", !state.besteller.trim());
+  $("sendErr").textContent = "Vul eerst alle velden in die rood gemarkeerd zijn.";
+  renderItems();
+  return false;
+}
+
+function toast(msg){ const t = $("toast"); t.textContent = msg; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 2200); }
+
+// events
+$("items").addEventListener("click", e => {
+  const b = e.target.closest("button[data-act]"); if(!b) return;
+  const it = state.items.find(x => x.id === b.closest(".item").dataset.id);
+  if(b.dataset.act === "remove"){ state.items = state.items.filter(x => x !== it); }
+  else { it[b.dataset.act] = b.dataset.val; }
+  save(); renderItems(); renderSummary();
+});
+$("items").addEventListener("input", e => {
+  const f = e.target; const act = f.dataset.act; if(!act || f.tagName === "BUTTON") return;
+  const it = state.items.find(x => x.id === f.closest(".item").dataset.id);
+  it[act] = act === "aantal" ? Math.max(1, parseInt(f.value) || 1) : f.value;
+  if(act === "maat") renderItems();
+  if(showErrors) f.classList.toggle("invalid", act === "naam" ? !f.value.trim() : false);
+  save(); renderSummary();
+});
+$("addBtn").addEventListener("click", () => {
+  const last = state.items[state.items.length-1];
+  const n = newItem(); if(last) n.artikel = last.artikel;
+  state.items.push(n); save(); renderItems(); renderSummary();
+  document.getElementById("naam-" + n.id)?.closest(".item").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"center"});
+});
+$("besteller").addEventListener("input", e => { state.besteller = e.target.value;
+  if(showErrors){ e.target.classList.toggle("invalid", !e.target.value.trim()); $("bestellerErr").textContent = e.target.value.trim() ? "" : "Vul je naam in."; }
+  save(); renderSummary(); });
+$("tel").addEventListener("input", e => { state.tel = e.target.value; save(); renderSummary(); });
+$("mailBtn").addEventListener("click", validateForSend);
+$("copyBtn").addEventListener("click", async () => {
+  if(!validateForSend()) return;
+  const text = buildText();
+  try{ await navigator.clipboard.writeText(text); toast("Tekst gekopieerd"); }
+  catch(e){
+    const r = document.createRange(); r.selectNodeContents($("preview"));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    toast("Tekst geselecteerd – kopieer met Ctrl+C of lang drukken");
+  }
+});
+
+load();
+$("besteller").value = state.besteller;
+$("tel").value = state.tel;
+renderItems(); renderSummary();
+</script>
+</body>
+</html>
