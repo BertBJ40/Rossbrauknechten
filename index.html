@@ -88,6 +88,11 @@ pre{white-space:pre-wrap;background:rgba(0,0,0,.18);border-radius:6px;padding:12
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);
   color:var(--bg);padding:10px 16px;border-radius:6px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s}
 .toast.show{opacity:1}
+.btn[disabled]{opacity:.6;cursor:wait}
+.done{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:18px;z-index:10}
+.done[hidden]{display:none}
+.done-box{background:var(--panel);color:var(--ink);border-radius:10px;padding:24px;max-width:420px;width:100%;border-top:10px solid var(--fluo)}
+.done-box h2{margin-top:0}
 @media (max-width:520px){.grid2,.row{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.toast{transition:none}}
 </style>
@@ -131,14 +136,21 @@ pre{white-space:pre-wrap;background:rgba(0,0,0,.18);border-radius:6px;padding:12
       <pre id="preview">Nog niets ingevuld.</pre>
       <div class="err" id="sendErr" style="color:var(--fluo)"></div>
       <div class="actions">
-        <a class="btn primary" id="mailBtn" href="#" target="_blank" rel="noopener">Verstuur bestelling via mail</a>
+        <button class="btn primary" id="sendBtn" type="button">Bestelling versturen</button>
         <button class="btn ghost" id="copyBtn" type="button">Kopieer tekst</button>
       </div>
-      <p class="note">De knop opent je mailprogramma met de bestelling al ingevuld. Werkt dat niet, kopieer dan de tekst en mail ze naar v_meheus@hotmail.com.</p>
+      <p class="note">Lukt versturen niet? Kopieer dan de tekst en mail ze naar v_meheus@hotmail.com.</p>
     </div>
   </section>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="done" id="done" hidden>
+  <div class="done-box">
+    <h2>Bestelling verzonden</h2>
+    <p id="doneText">Bedankt! Je bestelling is goed ontvangen.</p>
+    <button class="btn primary" id="newBtn" type="button">Nieuwe bestelling</button>
+  </div>
+</div>
 
 <script>
 // E-mailadres van de organisator.
@@ -235,8 +247,6 @@ function renderSummary(){
   $("tFluo").firstChild.nodeValue = sum("Fluohesje");
   const text = buildText();
   $("preview").textContent = text;
-  const enc = encodeURIComponent(text);
-  $("mailBtn").href = `mailto:${ORGANISATOR_MAIL}?subject=${encodeURIComponent("Bestelling Rossbrauknechten – " + (state.besteller.trim() || ""))}&body=${enc}`;
 }
 
 function isValid(){
@@ -282,7 +292,43 @@ $("besteller").addEventListener("input", e => { state.besteller = e.target.value
   if(showErrors){ e.target.classList.toggle("invalid", !e.target.value.trim()); $("bestellerErr").textContent = e.target.value.trim() ? "" : "Vul je naam in."; }
   save(); renderSummary(); });
 $("tel").addEventListener("input", e => { state.tel = e.target.value; save(); renderSummary(); });
-$("mailBtn").addEventListener("click", validateForSend);
+$("sendBtn").addEventListener("click", async () => {
+  if(!validateForSend()) return;
+  const btn = $("sendBtn");
+  btn.disabled = true; btn.textContent = "Bezig met versturen…";
+  $("sendErr").textContent = "";
+  const payload = {
+    _subject: "Bestelling Rossbrauknechten – " + state.besteller.trim(),
+    _template: "box",
+    Besteller: state.besteller.trim(),
+    Telefoon: state.tel.trim() || "-",
+    Truien: state.items.filter(i => i.artikel === "Trui").reduce((t,i) => t + Number(i.aantal), 0),
+    Fluohesjes: state.items.filter(i => i.artikel === "Fluohesje").reduce((t,i) => t + Number(i.aantal), 0),
+    Bestelling: buildText()
+  };
+  try{
+    const res = await fetch("https://formsubmit.co/ajax/" + ORGANISATOR_MAIL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json().catch(() => ({}));
+    if(!res.ok || String(data.success) !== "true") throw new Error(data.message || ("Status " + res.status));
+    const n = state.items.length;
+    state = { besteller:"", tel:"", items:[newItem()] }; showErrors = false;
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    $("besteller").value = ""; $("tel").value = "";
+    renderItems(); renderSummary();
+    $("doneText").textContent = `Bedankt! Je bestelling (${n} ${n === 1 ? "kledingstuk" : "kledingstukken"}) is verzonden. Het formulier is weer leeg.`;
+    $("done").hidden = false; $("newBtn").focus();
+  }catch(err){
+    $("sendErr").textContent = "Versturen is niet gelukt. Probeer opnieuw, of kopieer de tekst en mail ze naar " + ORGANISATOR_MAIL + ".";
+    console.error(err);
+  }finally{
+    btn.disabled = false; btn.textContent = "Bestelling versturen";
+  }
+});
+$("newBtn").addEventListener("click", () => { $("done").hidden = true; window.scrollTo(0,0); $("besteller").focus(); });
 $("copyBtn").addEventListener("click", async () => {
   if(!validateForSend()) return;
   const text = buildText();
